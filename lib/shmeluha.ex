@@ -3,6 +3,7 @@ defmodule Shmeluha do
   require Logger
   import Supervisor.Spec, warn: false
 
+  # the start/2 callback has to spawn and link a supervisor and return {:ok, pid} or {:ok, pid, state}
   def start(_type, _args) do
     Logger.log(:info, "Started app")
 

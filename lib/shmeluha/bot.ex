@@ -2,10 +2,12 @@ defmodule Shmeluha.Bot do
   @url "https://api.telegram.org/"
   @token "bot174798506:AAGRrBFEL6aZzEuAJzK6kM9djHH5b6sMPTg/"
 
+  # возвращает id последнего сообщения боту в формате %{“update_id” => update_id }
   def getUpdates(%{update_id: offset}) do
     Shmeluha.Bot.exec_cmd("getUpdates", %{offset: offset}) |> process_jobs
   end
 
+  # запрос к API
   def exec_cmd(cmd, params) do
     case get(cmd, params) do
       {:ok, %{status_code: 200, body: body}} ->
