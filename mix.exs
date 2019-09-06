@@ -14,7 +14,6 @@ defmodule Shmeluha.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      # the mod key of an application resource file configures an application callback module and start argument
       mod: {Shmeluha, []},
       extra_applications: [:logger]
     ]
