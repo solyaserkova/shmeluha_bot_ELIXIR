@@ -7,7 +7,8 @@ defmodule Shmeluha do
     Logger.log(:info, "Started app")
 
     children = [
-      worker(Shmeluha.Poller, [])
+      worker(Shmeluha.Poller, []),
+      worker(Shmeluha.MsgCounter, [])
     ]
 
     opts = [strategy: :one_for_one, name: Shmeluha.Supervisor]

@@ -19,14 +19,14 @@ defmodule Shmeluha.Bot do
     end
   end
 
-  def process_updates([h | tail]) do
-    process_update(h)
-    process_updates(tail)
-  end
-
   def process_updates([update]) do
     process_update(update)
     update
+  end
+
+  def process_updates([h | tail]) do
+    process_update(h)
+    process_updates(tail)
   end
 
   def process_updates([]) do
