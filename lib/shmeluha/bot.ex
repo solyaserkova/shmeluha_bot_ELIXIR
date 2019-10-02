@@ -4,7 +4,7 @@ defmodule Shmeluha.Bot do
 
   # возвращает id последнего сообщения боту в формате %{“update_id” => update_id }
   def getUpdates(%{update_id: offset}) do
-    Shmeluha.Bot.exec_cmd("getUpdates", %{offset: offset}) |> process_jobs
+    Shmeluha.Bot.exec_cmd("getUpdates", %{offset: offset}) |> process_updates
   end
 
   # запрос к API
@@ -19,21 +19,21 @@ defmodule Shmeluha.Bot do
     end
   end
 
-  def process_jobs([job]) do
-    process_job(job)
-    job
+  def process_updates([h | tail]) do
+    process_update(h)
+    process_updates(tail)
   end
 
-  def process_jobs([h | tail]) do
-    process_job(h)
-    process_jobs(tail)
+  def process_updates([update]) do
+    process_update(update)
+    update
   end
 
-  def process_jobs([]) do
+  def process_updates([]) do
     %{"update_id" => 0}
   end
 
-  def process_job(update) do
+  def process_update(update) do
     spawn(fn ->
       Shmeluha.BotReplyHandler.reply(update)
     end)
