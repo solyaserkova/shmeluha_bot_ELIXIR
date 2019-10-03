@@ -30,11 +30,16 @@ defmodule Shmeluha.MsgCounter do
   # state == message count
 
   def init(state) do
-    spawn(fn -> tick_loop() end)
+    start_tick_loop
+
     {:ok, state}
   end
 
-  def tick_loop do
+  defp start_tick_loop do
+    spawn(fn -> tick_loop() end)
+  end
+
+  defp tick_loop do
     :timer.sleep(1000)
 
     send(:msg_counter_server, :tick)
@@ -48,10 +53,10 @@ defmodule Shmeluha.MsgCounter do
     {:noreply, %{state | current_count: new_current_count, count_list: new_cl}}
   end
 
-  def handle_cast(:increase, %Counter{current_count: cc, count_list: cl}) do
+  def handle_cast(:increase, %Counter{current_count: cc}) do
     new_cc = cc + 1
 
-    {:noreply, %Counter{current_count: new_cc, count_list: cl}}
+    {:noreply, %Counter{current_count: new_cc}}
   end
 
   def handle_call(:value, _from, %Counter{count_list: cl} = state) do

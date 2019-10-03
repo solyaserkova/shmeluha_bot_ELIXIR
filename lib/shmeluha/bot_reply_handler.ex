@@ -1,12 +1,15 @@
 defmodule Shmeluha.BotReplyHandler do
   require Logger
 
-  def reply(%{"message" => %{"text" => text, "chat" => %{"id" => id}}}) do
+  @msg_per_period 5
+
+  def reply(%{"message" => %{"text" => text, "chat" => %{"id" => id, "type" => type}}}) do
     Logger.info("sending answer")
     Shmeluha.MsgCounter.increase()
     IO.puts("#{Shmeluha.MsgCounter.value()}")
 
-    if Shmeluha.MsgCounter.value() > 20, do: Shmeluha.BotReply.send_answer(text, id)
+    if Shmeluha.MsgCounter.value() > @msg_per_period || type == "private",
+      do: Shmeluha.BotReply.send_answer(text, id)
   end
 
   def reply(_) do
